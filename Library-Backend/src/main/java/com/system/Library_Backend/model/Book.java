@@ -1,5 +1,5 @@
 package com.system.Library_Backend.model;
-import jakarta.annotation.Generated;
+// import jakarta.annotation.Generated;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -7,7 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+// import lombok.NoArgsConstructor;
 @Entity
 @Data
 @Table(name = "books")
