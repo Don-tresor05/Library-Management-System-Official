@@ -1,14 +1,13 @@
 package com.system.Library_Backend.repository;
 
+import com.system.Library_Backend.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import com.system.Library_Backend.model.User;
 
+import java.util.Optional;
+
+@Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    // Custom query methods can be defined here if needed
-    // For example, to find users by email or role
-    User findByEmail(String email);
-    User findByRole(String role);
-    User findByName(String name);
-    
+    Optional<User> findByEmail(String email);
+    boolean existsByEmail(String email);
 }
