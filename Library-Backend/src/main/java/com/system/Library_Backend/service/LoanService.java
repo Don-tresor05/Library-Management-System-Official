@@ -1,5 +1,7 @@
 package com.system.Library_Backend.service;
 
+import com.system.Library_Backend.exceptions.BookNotAvail;
+import com.system.Library_Backend.exceptions.MaxLoans;
 import com.system.Library_Backend.model.Book;
 import com.system.Library_Backend.model.Loan;
 import com.system.Library_Backend.model.User;
@@ -28,58 +30,68 @@ public class LoanService {
         this.bookRepository = bookRepository;
     }
 
-    // Create a new loan
+    
     public Loan createLoan(Loan loan) {
-        // Check if user exists
+        
         User user = userRepository.findById(loan.getUser().getId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
         
-        // Check if book exists and is available
+        
         Book book = bookRepository.findById(loan.getBook().getId())
                 .orElseThrow(() -> new RuntimeException("Book not found"));
         
-        if (!book.isAvailable()) {
-            throw new RuntimeException("Book is not available for loan");
+                if (!book.isAvailable() || loanRepository.existsByBookIdAndReturnedDateIsNull(book.getId())) {
+                    throw new BookNotAvail();
+                }
+
+                if (loanRepository.countByUserIdAndReturnedDateIsNull(user.getId()) >= 3) {
+                    throw new MaxLoans();
+                }
+
+        long activeLoans = loanRepository.countByUserIdAndReturnedDateIsNull(loan.getUser().getId());
+        if (activeLoans >= 3) {
+            throw new RuntimeException("User has reached the maximum number of active loans (3)");
         }
+        loan.setUser(user);
         
-        // Set dates
+        
         loan.setBorrowedDate(LocalDate.now());
-        loan.setDueDate(LocalDate.now().plusWeeks(2)); // 2 weeks loan period
+        loan.setDueDate(LocalDate.now().plusWeeks(2)); 
         
-        // Update book availability
+       
         book.setAvailable(false);
         bookRepository.save(book);
         
         return loanRepository.save(loan);
     }
 
-    // Get all loans
+   
     public List<Loan> getAllLoans() {
         return loanRepository.findAll();
     }
 
-    // Get loan by ID
+    
     public Loan getLoanById(Long id) {
         return loanRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Loan not found with id: " + id));
     }
 
-    // Get loans by user ID
+    
     public List<Loan> getLoansByUserId(Long userId) {
         return loanRepository.findByUserId(userId);
     }
 
-    // Get loans by book ID
+    
     public List<Loan> getLoansByBookId(Long bookId) {
         return loanRepository.findByBookId(bookId);
     }
 
-    // Return a book (end a loan)
+    
     public Loan returnBook(Long loanId) {
         Loan loan = loanRepository.findById(loanId)
                 .orElseThrow(() -> new RuntimeException("Loan not found with id: " + loanId));
         
-        // Update book availability
+        
         Book book = loan.getBook();
         book.setAvailable(true);
         bookRepository.save(book);
@@ -87,12 +99,12 @@ public class LoanService {
         return loan;
     }
 
-    // Delete a loan (admin only)
+   
     public void deleteLoan(Long id) {
         Loan loan = loanRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Loan not found with id: " + id));
         
-        // If book wasn't returned, make it available
+       
         if (loan.getReturnedDate() == null) {
             Book book = loan.getBook();
             book.setAvailable(true);
