@@ -1,22 +1,24 @@
+// src/App.jsx
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import BooksPage from './pages/BooksPage';
-import UsersPage from './pages/UsersPage';
-import LoansPage from './pages/LoansPage';
+import BookList from './pages/BookList';
+import UserManagement from './pages/UserManagement';
+import LoanManagement from './pages/LoanManagement';
+import './styles/main.css';
 
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-gray-100">
+      <div className="app">
         <Navbar />
-        <div className="container mx-auto p-4">
+        <main className="container">
           <Routes>
-            <Route path="/" element={<BooksPage />} />
-            <Route path="/books" element={<BooksPage />} />
-            <Route path="/users" element={<UsersPage />} />
-            <Route path="/loans" element={<LoansPage />} />
+            <Route path="/" element={<BookList />} />
+            <Route path="/users" element={<UserManagement />} />
+            <Route path="/loans" element={<LoanManagement />} />
           </Routes>
-        </div>
+        </main>
       </div>
     </Router>
   );
