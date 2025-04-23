@@ -37,11 +37,15 @@ public class BookService {
     public Book updateBook(Long id, Book bookDetails) {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Book not found with id: " + id));
-
+    
         book.setTitle(bookDetails.getTitle());
         book.setAuthor(bookDetails.getAuthor());
+        book.setIsbn(bookDetails.getIsbn());
+        book.setPublicationYear(bookDetails.getPublicationYear());
+        book.setGenre(bookDetails.getGenre());
+        book.setQuantity(bookDetails.getQuantity());
         book.setAvailable(bookDetails.isAvailable());
-
+    
         return bookRepository.save(book);
     }
 

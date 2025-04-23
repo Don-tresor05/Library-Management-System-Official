@@ -1,7 +1,5 @@
 package com.system.Library_Backend.model;
 
-
-
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -20,8 +18,17 @@ public class Book {
     private String author;
     
     @Column(nullable = false)
+    private String isbn;
+    
+    @Column
+    private String publicationYear;
+    
+    @Column
+    private String genre;
+    
+    @Column(nullable = false)
+    private Integer quantity;
+    
+    @Column(nullable = false)
     private boolean available = true;
 }
-
-
-
