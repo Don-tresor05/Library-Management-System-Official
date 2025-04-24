@@ -51,8 +51,10 @@ public class UserService {
             throw new RuntimeException("Email already in use");
         }
 
-        user.setName(userDetails.getName());
+        user.setFullName(userDetails.getFullName());
         user.setEmail(userDetails.getEmail());
+        user.setPhoneNumber(null); // Optional, can be null
+        user.setAddress(null); // Optional, can be null
         user.setRole(userDetails.getRole());
         
         // Only update password if it's provided
