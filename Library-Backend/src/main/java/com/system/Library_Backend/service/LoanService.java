@@ -87,16 +87,20 @@ public class LoanService {
     }
 
     
-    public Loan returnBook(Long loanId) {
-        Loan loan = loanRepository.findById(loanId)
-                .orElseThrow(() -> new RuntimeException("Loan not found with id: " + loanId));
+    public Loan returnBook(Long id) {
+        Loan loan = loanRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Loan not found with id: " + id));
         
+        if (loan.getReturnedDate() != null) {
+            throw new RuntimeException("Book already returned");
+        }
         
+        loan.setReturnedDate(LocalDate.now());
         Book book = loan.getBook();
         book.setAvailable(true);
         bookRepository.save(book);
         
-        return loan;
+        return loanRepository.save(loan);
     }
 
    

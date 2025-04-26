@@ -1,27 +1,76 @@
-// src/App.jsx
+// // src/App.jsx
+// import React from 'react';
+// import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// import Navbar from './components/Navbar';
+// import BookList from './pages/BookList';
+// import UserManagement from './pages/UserManagement';
+// import LoanManagement from './pages/LoanManagement';
+// import './styles/main.css';
+
+// function App() {
+//   return (
+//     <Router>
+//       <div className="app">
+//         <Navbar />
+//         <main className="container">
+//           <Routes>
+//             <Route path="/" element={<BookList />} />
+//             <Route path="/users" element={<UserManagement />} />
+//             <Route path="/loans" element={<LoanManagement />} />
+//           </Routes>
+//         </main>
+//       </div>
+//     </Router>
+//   );
+// }
+
+// export default App;
+
+
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import BookList from './pages/BookList';
-import UserManagement from './pages/UserManagement';
-import LoanManagement from './pages/LoanManagement';
-import './styles/main.css';
+import Layout from './components/layout/Layout';
+import BookList from './components/books/BookList';
+import BookDetail from './components/books/BookDetail';
+import UserList from './components/users/UserList';
+import UserForm from './components/users/UserForm';
+import UserLoans from './components/loans/UserLoans';
+import LoanList from './components/loans/LoanList';
+import Login from './components/auth/Login';
+import Register from './components/auth/Register';
+import BookForm from './components/admin/BookForm';
+import { AuthProvider } from './context/AuthContext';
 
-function App() {
+const App = () => {
   return (
     <Router>
-      <div className="app">
-        <Navbar />
-        <main className="container">
+      <AuthProvider>
+        <Layout>
           <Routes>
+            {/* Public Routes */}
             <Route path="/" element={<BookList />} />
-            <Route path="/users" element={<UserManagement />} />
-            <Route path="/loans" element={<LoanManagement />} />
+            <Route path="/books" element={<BookList />} />
+            <Route path="/books/:id" element={<BookDetail />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            
+            {/* User Routes */}
+            <Route path="/loans" element={<LoanList />} />
+            
+            {/* Admin Routes */}
+            <Route path="/admin/books" element={<BookList adminView />} />
+            <Route path="/admin/books/create" element={<BookForm />} />
+            <Route path="/admin/books/edit/:id" element={<BookForm />} />
+            <Route path="/admin/users" element={<UserList />} />
+            <Route path="/admin/users/create" element={<UserForm />} />
+            <Route path="/admin/users/edit/:id" element={<UserForm />} />
+            <Route path="/admin/users/:userId/loans" element={<UserLoans />} />
+            <Route path="/admin/loans" element={<LoanList />} />
           </Routes>
-        </main>
-      </div>
+        </Layout>
+      </AuthProvider>
     </Router>
   );
-}
+};
 
 export default App;

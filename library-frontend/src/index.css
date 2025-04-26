@@ -15,10 +15,28 @@ code {
     monospace;
 }
 
-.input {
-  @apply w-full p-2 border rounded;
-}
-
-.btn {
-  @apply px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700;
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded font-medium transition-colors;
+  }
+  
+  .btn-primary {
+    @apply bg-primary text-white hover:bg-primary/90;
+  }
+  
+  .btn-secondary {
+    @apply bg-secondary text-white hover:bg-secondary/90;
+  }
+  
+  .btn-danger {
+    @apply bg-danger text-white hover:bg-danger/90;
+  }
+  
+  .form-input {
+    @apply w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-primary/50;
+  }
+  
+  .card {
+    @apply bg-white rounded-lg shadow-md p-6;
+  }
 }

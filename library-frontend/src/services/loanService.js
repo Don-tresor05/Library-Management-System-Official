@@ -30,3 +30,18 @@ export const returnBook = async (id) => {
     throw error;
   }
 };
+
+
+
+// // Loan Service
+// import api from './api'; // Adjust the import path as necessary
+
+// export const loanService = {
+//   getAllLoans: () => api.get('/loans'),
+//   getLoanById: (id) => api.get(`/loans/${id}`),
+//   getLoansByUserId: (userId) => api.get(`/loans/user/${userId}`),
+//   getLoansByBookId: (bookId) => api.get(`/loans/book/${bookId}`),
+//   createLoan: (loan) => api.post('/loans', loan),
+//   returnBook: (id) => api.put(`/loans/${id}/return`),
+//   deleteLoan: (id) => api.delete(`/loans/${id}`),
+// };

@@ -39,3 +39,16 @@ export const deleteBook = async (id) => {
     throw error;
   }
 };
+
+
+
+// // Book Service
+// import api from './api'; // Adjust the import path as necessary
+// export const bookService = {
+//   getAllBooks: () => api.get('/books'),
+//   getBookById: (id) => api.get(`/books/${id}`),
+//   getAvailableBooks: () => api.get('/books/available'),
+//   addBook: (book) => api.post('/books', book),
+//   updateBook: (id, book) => api.put(`/books/${id}`, book),
+//   deleteBook: (id) => api.delete(`/books/${id}`),
+// };
