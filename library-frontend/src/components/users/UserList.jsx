@@ -1,4 +1,3 @@
-// src/components/users/UserList.jsx
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { userService } from '../../services/api';
@@ -7,6 +6,7 @@ import { useAuth } from '../../context/AuthContext';
 const UserList = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const { isAdmin } = useAuth();
   
@@ -14,10 +14,17 @@ const UserList = () => {
     const fetchUsers = async () => {
       try {
         const response = await userService.getAllUsers();
-        setUsers(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching users:', error);
+        
+        const validatedUsers = response.data.map(user => ({
+          id: user.id || '',
+          name: user.fullName || 'Unknown',
+          email: user.email || 'No email',
+          role: user.role || 'STUDENT'
+        }));
+        setUsers(validatedUsers);
+      } catch (err) {
+        setError(err.response?.data?.message || 'Failed to load users');
+      } finally {
         setLoading(false);
       }
     };
@@ -32,18 +39,20 @@ const UserList = () => {
     
     try {
       await userService.deleteUser(id);
-      setUsers(users.filter(user => user.id !== id));
-    } catch (error) {
-      console.error('Error deleting user:', error);
-      alert('Failed to delete user');
+      setUsers(prevUsers => prevUsers.filter(user => user.id !== id));
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to delete user');
     }
   };
   
-  const filteredUsers = users.filter(user => 
-    user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.email.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-  
+  const filteredUsers = users.filter(user => {
+    const safeName = user?.name?.toString().toLowerCase() || '';
+    const safeEmail = user?.email?.toString().toLowerCase() || '';
+    const search = searchTerm.toLowerCase();
+    
+    return safeName.includes(search) || safeEmail.includes(search);
+  });
+
   if (!isAdmin) {
     return (
       <div className="text-center py-10">
@@ -57,6 +66,21 @@ const UserList = () => {
     return (
       <div className="flex justify-center items-center h-64">
         <div className="text-xl text-gray-500">Loading users...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-10">
+        <h2 className="text-2xl font-bold text-red-600">Error</h2>
+        <p className="text-gray-500 mt-2">{error}</p>
+        <button 
+          onClick={() => window.location.reload()}
+          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          Retry
+        </button>
       </div>
     );
   }
@@ -98,7 +122,9 @@ const UserList = () => {
       
       {filteredUsers.length === 0 ? (
         <div className="text-center py-10">
-          <p className="text-lg text-gray-500">No users found matching your criteria.</p>
+          <p className="text-lg text-gray-500">
+            {searchTerm ? 'No users match your search' : 'No users found'}
+          </p>
         </div>
       ) : (
         <div className="bg-white rounded-lg shadow overflow-hidden">
@@ -113,7 +139,7 @@ const UserList = () => {
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {filteredUsers.map(user => (
-                <tr key={user.id}>
+                <tr key={user.id || Math.random()}>
                   <td className="px-6 py-4 whitespace-nowrap">{user.name}</td>
                   <td className="px-6 py-4 whitespace-nowrap">{user.email}</td>
                   <td className="px-6 py-4 whitespace-nowrap">

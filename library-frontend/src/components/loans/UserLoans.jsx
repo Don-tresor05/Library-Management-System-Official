@@ -1,4 +1,3 @@
-// src/components/loans/UserLoans.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { loanService, userService } from '../../services/api';

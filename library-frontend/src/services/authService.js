@@ -1,5 +1,4 @@
-// Auth Service (for Day 4)
-import api from './api'; // Adjust the import path as necessary
+import api from './api'; 
 
 export const authService = {
     login: (credentials) => api.post('/auth/login', credentials),

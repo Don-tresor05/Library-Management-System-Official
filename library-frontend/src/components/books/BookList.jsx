@@ -1,4 +1,3 @@
-// src/components/books/BookList.jsx
 import React, { useState, useEffect } from 'react';
 import { bookService } from '../../services/api';
 import BookCard from './BookCard';

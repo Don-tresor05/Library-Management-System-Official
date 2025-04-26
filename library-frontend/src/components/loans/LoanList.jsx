@@ -1,4 +1,3 @@
-// src/components/loans/LoanList.jsx
 import React, { useState, useEffect } from 'react';
 import { loanService } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
@@ -6,7 +5,7 @@ import { useAuth } from '../../context/AuthContext';
 const LoanList = () => {
   const [loans, setLoans] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState('all'); // 'all', 'active', 'returned'
+  const [filter, setFilter] = useState('all');
   const { user, isAdmin } = useAuth();
   
   useEffect(() => {
