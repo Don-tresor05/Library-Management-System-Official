@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { bookService } from '../../services/api';
 import BookCard from './BookCard';
 import { useAuth } from '../../context/AuthContext';
 
-const BookList = () => {
+const BookList = ({ adminView = false }) => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filter, setFilter] = useState('all'); // 'all', 'available'
-  const { isAuthenticated } = useAuth();
+  const [filter, setFilter] = useState('all');
+  const { isAuthenticated, } = useAuth();
   
   useEffect(() => {
     const fetchBooks = async () => {
@@ -24,7 +25,19 @@ const BookList = () => {
     
     fetchBooks();
   }, []);
-  
+
+  const handleDeleteBook = async (id) => {
+    if (window.confirm('Are you sure you want to delete this book?')) {
+      try {
+        await bookService.deleteBook(id);
+        setBooks(books.filter(book => book.id !== id));
+      } catch (error) {
+        console.error('Error deleting book:', error);
+        alert('Failed to delete book');
+      }
+    }
+  };
+
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
@@ -39,6 +52,18 @@ const BookList = () => {
     
     return matchesSearch;
   });
+
+  const refreshBooks = async () => {
+    setLoading(true);
+    try {
+      const response = await bookService.getAllBooks();
+      setBooks(response.data);
+    } catch (error) {
+      console.error('Error refreshing books:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
   
   if (loading) {
     return (
@@ -50,13 +75,25 @@ const BookList = () => {
   
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold text-gray-800">Library Books</h1>
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold text-gray-800">
+          {adminView ? 'Manage Books' : 'Library Books'}
+        </h1>
+        {adminView && (
+          <Link 
+            to="/admin/books/create" 
+            className="btn btn-primary"
+          >
+            + Add New Book
+          </Link>
+        )}
+      </div>
       
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div className="relative w-full md:w-1/2">
           <input
             type="text"
-            placeholder="Search by title or author..."
+            placeholder={`Search by ${adminView ? 'title, author or ISBN' : 'title or author'}...`}
             value={searchTerm}
             onChange={handleSearch}
             className="form-input pl-10"
@@ -99,7 +136,10 @@ const BookList = () => {
             <BookCard 
               key={book.id} 
               book={book} 
-              canBorrow={isAuthenticated}
+              canBorrow={isAuthenticated && !adminView}
+              adminView={adminView}
+              onDelete={handleDeleteBook}
+              refreshBooks={refreshBooks}
             />
           ))}
         </div>
