@@ -10,4 +10,4 @@ COPY -from-build/target/Library-Backend-0.0.1-SNAPSHOT.jar Library-Backend.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java","-jar", "Library-Backend.jar")
+ENTRYPOINT ["java","-jar", "Library-Backend.jar")z
