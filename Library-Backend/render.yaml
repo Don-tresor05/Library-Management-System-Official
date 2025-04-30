@@ -1,0 +1,38 @@
+services:
+  - type: web
+    name: Library-Backend
+    env: docker
+    dockerContext: ./LIBRARY-MANAGEMENT-SYSTEM-OFFICIAL
+    dockerfilePath: Dockerfile
+    plan: free
+    envVars:
+      - key: DB_HOST
+        value: root.mysql
+      - key: DB_PORT
+        value: 3306
+      - key: library_management_db
+        value: library_management_db
+      - key: DB_USER
+        fromDatabase:
+          name: root-mysql
+          property: root
+      - key: Tresor92
+        fromDatabase:
+          name: root-mysql
+          property: Tresor92
+
+  - type: web
+    name: root-mysql
+    env: docker
+    dockerContext: ./mysql
+    dockerfilePath: Dockerfile
+    plan: free  # Upgrade for production
+    envVars:
+      - key: Tresor92
+        generateValue: true
+      - key: library_management_db
+        value: library_management_db
+      - key: root
+        generateValue: true
+      - key: Tresor92
+        generateValue: true
