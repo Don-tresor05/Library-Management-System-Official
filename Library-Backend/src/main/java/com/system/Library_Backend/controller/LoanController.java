@@ -38,6 +38,11 @@ public class LoanController {
         return new ResponseEntity<>(loans, HttpStatus.OK);
     }
 
+    @GetMapping("/active")
+public ResponseEntity<List<Loan>> getActiveLoans() {
+    return ResponseEntity.ok(loanService.getActiveLoans());
+}
+
     // Get loan by ID
     @GetMapping("/{id}")
     public ResponseEntity<Loan> getLoanById(@PathVariable Long id) {

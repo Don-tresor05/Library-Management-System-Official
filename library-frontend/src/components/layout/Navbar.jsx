@@ -19,6 +19,9 @@ const Navbar = () => {
           
           <div className="flex items-center space-x-6">
             <Link to="/" className="hover:text-gray-200">Home</Link>
+            <Link to="/admin/dashboard" className="nav-link">
+  Dashboard
+</Link>
             <Link to="/books" className="hover:text-gray-200">Books</Link>
             
             {isAuthenticated ? (

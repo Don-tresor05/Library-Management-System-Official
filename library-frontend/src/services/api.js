@@ -67,6 +67,7 @@ export const userService = {
 };
 
 export const loanService = {
+  getActiveLoans: () => api.get('/api/loans/active'),
   getAllLoans,
   getLoanById,
   getLoansByUserId,
@@ -87,6 +88,10 @@ export const authService = {
     localStorage.removeItem('user');
     localStorage.removeItem('token');
   }
+};
+
+export const activityLogService = {
+  getActivityLogs: (params) => api.get('/api/activity-logs', { params }),
 };
 
 export default api;

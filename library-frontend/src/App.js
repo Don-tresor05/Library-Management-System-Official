@@ -11,6 +11,7 @@ import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import BookForm from './components/admin/BookForm';
 import { AuthProvider } from './context/AuthContext';
+import AnalyticsDashboard from './components/analytics/AnalyticsDashboard';
 
 const App = () => {
   return (
@@ -37,6 +38,7 @@ const App = () => {
             <Route path="/admin/users/edit/:id" element={<UserForm />} />
             <Route path="/admin/users/:userId/loans" element={<UserLoans />} />
             <Route path="/admin/loans" element={<LoanList />} />
+            <Route path="/admin/dashboard" element={<AnalyticsDashboard />} />
           </Routes>
         </Layout>
       </AuthProvider>
