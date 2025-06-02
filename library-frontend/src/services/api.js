@@ -41,6 +41,7 @@ const getAllLoans = () => api.get('/loans');
 const getLoanById = (id) => api.get(`/loans/${id}`);
 const getLoansByUserId = (userId) => api.get(`/loans/user/${userId}`);
 const getLoansByBookId = (bookId) => api.get(`/loans/book/${bookId}`);
+const getActiveLoans = () => api.get('/loans/active');
 const createLoan = (loan) => api.post('/loans', loan);
 const returnBook = (id) => api.put(`/loans/${id}/return`);
 const deleteLoan = (id) => api.delete(`/loans/${id}`);
@@ -48,6 +49,9 @@ const deleteLoan = (id) => api.delete(`/loans/${id}`);
 
 const login = (credentials) => api.post('/auth/login', credentials);
 const register = (user) => api.post('/auth/register', user);
+
+const getActivityLogs = (params) => api.get('/activity-logs', { params });
+
 
 export const bookService = {
   getAllBooks,
@@ -67,7 +71,7 @@ export const userService = {
 };
 
 export const loanService = {
-  getActiveLoans: () => api.get('/api/loans/active'),
+  getActiveLoans,
   getAllLoans,
   getLoanById,
   getLoansByUserId,
@@ -91,7 +95,7 @@ export const authService = {
 };
 
 export const activityLogService = {
-  getActivityLogs: (params) => api.get('/api/activity-logs', { params }),
+  getActivityLogs
 };
 
 export default api;
