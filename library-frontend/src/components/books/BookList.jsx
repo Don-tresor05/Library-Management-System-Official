@@ -10,6 +10,38 @@ const BookList = ({ adminView = false }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filter, setFilter] = useState('all');
   const { isAuthenticated, } = useAuth();
+
+  const [pagination, setPagination] = useState({
+    page: 1,
+    pageSize: 8,
+    totalItems: 0,
+    sortField: 'title',
+    sortOrder: 'asc'
+  });
+
+  const fetchBooks = async () => {
+    setLoading(true);
+    try {
+      const params = {
+        page: pagination.page - 1, // Spring pagination is 0-based
+        size: pagination.pageSize,
+        sort: `${pagination.sortField},${pagination.sortOrder}`,
+        search: searchTerm,
+        available: filter === 'available' ? true : undefined
+      };
+
+      const response = await bookService.getAllBooks(params);
+      setBooks(response.data.content);
+      setPagination(prev => ({
+        ...prev,
+        totalItems: response.data.totalElements
+      }));
+    } catch (error) {
+      console.error('Error fetching books:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
   
   useEffect(() => {
     const fetchBooks = async () => {

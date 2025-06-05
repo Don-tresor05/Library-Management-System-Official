@@ -22,15 +22,15 @@ api.interceptors.request.use(
 );
 
 
-const getAllBooks = () => api.get('/books');
+const getAllBooks = (params = {}) => api.get('/books', { params });
 const getBookById = (id) => api.get(`/books/${id}`);
-const getAvailableBooks = () => api.get('/books/available');
+const getAvailableBooks = (params) => api.get('/books/available', { params });
 const addBook = (book) => api.post('/books', book);
 const updateBook = (id, book) => api.put(`/books/${id}`, book);
 const deleteBook = (id) => api.delete(`/books/${id}`);
 
 
-const getAllUsers = () => api.get('/users');
+const getAllUsers = (params = {}) => api.get('/users', { params });
 const getUserById = (id) => api.get(`/users/${id}`);
 const createUser = (user) => api.post('/users', user);
 const updateUser = (id, user) => api.put(`/users/${id}`, user);

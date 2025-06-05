@@ -27,10 +27,10 @@ const Login = () => {
     
     try {
       await login(credentials.email, credentials.password);
-      navigate('/');
+      navigate('/books'); // Changed from '/' to '/books'
     } catch (error) {
       console.error('Login error:', error);
-      setError('Invalid email or password');
+      setError(error.response?.data?.message || 'Invalid email or password');
     } finally {
       setLoading(false);
     }
@@ -56,7 +56,7 @@ const Login = () => {
               value={credentials.email}
               onChange={handleChange}
               required
-              className="form-input"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="example@email.com"
             />
           </div>
@@ -69,14 +69,14 @@ const Login = () => {
               value={credentials.password}
               onChange={handleChange}
               required
-              className="form-input"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="••••••••"
             />
           </div>
           
           <button
             type="submit"
-            className="btn btn-primary w-full"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50"
             disabled={loading}
           >
             {loading ? 'Logging in...' : 'Login'}
@@ -85,7 +85,7 @@ const Login = () => {
         
         <div className="mt-6 text-center">
           <p className="text-gray-600">
-            Don't have an account? <Link to="/register" className="text-primary hover:underline">Register</Link>
+            Don't have an account? <Link to="/register" className="text-blue-600 hover:underline">Register</Link>
           </p>
         </div>
       </div>
