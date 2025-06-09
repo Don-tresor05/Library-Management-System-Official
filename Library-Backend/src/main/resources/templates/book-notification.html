@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Notification</title>
+</head>
+<body>
+    <h1 th:text="|Book ${action} Notification|"></h1>
+    <p>Dear <span th:text="${user.fullName}"></span>,</p>
+    
+    <p th:text="|You have successfully ${action}ed the book:|"></p>
+    <ul>
+        <li>Title: <span th:text="${book.title}"></span></li>
+        <li>Author: <span th:text="${book.author}"></span></li>
+        <li>ISBN: <span th:text="${book.isbn}"></span></li>
+    </ul>
+    
+    <p>Thank you for using our library!</p>
+</body>
+</html>

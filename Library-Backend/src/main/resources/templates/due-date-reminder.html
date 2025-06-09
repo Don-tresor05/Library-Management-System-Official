@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Due Date Reminder</title>
+</head>
+<body>
+    <h1>Book Due Date Reminder</h1>
+    <p>Dear <span th:text="${user.fullName}"></span>,</p>
+    
+    <p>This is a friendly reminder about your borrowed book:</p>
+    <ul>
+        <li>Title: <span th:text="${book.title}"></span></li>
+        <li>Author: <span th:text="${book.author}"></span></li>
+        <li>Due Date: <span th:text="${dueDate}"></span></li>
+        <li>Days Remaining: <span th:text="${daysRemaining}"></span></li>
+    </ul>
+    
+    <p>Please return or renew the book before the due date to avoid late fees.</p>
+    <p>Thank you!</p>
+</body>
+</html>

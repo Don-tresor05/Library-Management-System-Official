@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom';
 import { loanService } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { useNotification } from '../../context/NotificationContext';
 
 const BookCard = ({ book, canBorrow, refreshBooks }) => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { addNotification } = useNotification();
   
   const handleBorrow = async () => {
     if (!user) {
@@ -29,13 +31,19 @@ const BookCard = ({ book, canBorrow, refreshBooks }) => {
         window.location.reload();
       }
       
-      alert(`You have successfully borrowed "${book.title}"`);
+      // Replace alert with notification
+      addNotification(`You have successfully borrowed "${book.title}"`, 'success');
+      
     } catch (error) {
-      if (error.response && error.response.status === 400) {
-        alert(error.response.data.message || "You can't borrow this book right now.");
-      } else {
-        alert("An error occurred while processing your request.");
+      let errorMessage = "An error occurred while processing your request.";
+      
+      if (error.response) {
+        errorMessage = error.response.data.message || 
+          (error.response.status === 400 ? "You can't borrow this book right now." : errorMessage);
       }
+      
+      // Replace alert with notification
+      addNotification(errorMessage, 'error');
       console.error('Error borrowing book:', error);
     }
   };
